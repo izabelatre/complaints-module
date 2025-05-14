@@ -1,12 +1,12 @@
 package pl.complaints.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.complaints.dto.complaint.ComplaintRequestDto;
+import pl.complaints.dto.complaint.ComplaintCreateRequestDTO;
 import pl.complaints.dto.complaint.ComplaintResponseDTO;
+import pl.complaints.dto.complaint.ComplaintUpdateRequestDTO;
 import pl.complaints.service.ComplaintService;
 
 import java.util.List;
@@ -24,19 +24,22 @@ public class ComplaintController {
     private final ComplaintService complaintService;
 
     @GetMapping
-    public ResponseEntity<List<ComplaintResponseDTO>> getAllUserComplains(Authentication authentication, HttpServletRequest request) {
+    public ResponseEntity<List<ComplaintResponseDTO>> getAllUserComplaints(Authentication authentication, HttpServletRequest request) {
         return ResponseEntity.ok(complaintService.getAllCustomerComplaints(getCustomerIdFromAuthentication(authentication)));
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> createComplain(Authentication authentication, HttpServletRequest request,
-                                                  @RequestBody ComplaintRequestDto complaintRequestDto) {
-        complaintService.createComplain(authentication, request, complaintRequestDto);
+    public ResponseEntity<Boolean> createComplaint(Authentication authentication, HttpServletRequest request,
+                                                   @RequestBody ComplaintCreateRequestDTO complaintCreateRequestDto) {
+        complaintService.createComplaint(authentication, request, complaintCreateRequestDto);
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<ComplaintResponseDTO> editComplain(Authentication authentication, HttpServletRequest request) {
-//        return ResponseEntity.ok(complaintService.getAllCustomerComplaints(getCustomerIdFromAuthentication(authentication)));
-//    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Boolean> editComplaint(Authentication authentication, HttpServletRequest request,
+                                                 @RequestBody ComplaintUpdateRequestDTO complaintCreateRequestDto,
+                                                 @PathVariable Long id) {
+        complaintService.updateComplaint(id,authentication, request, complaintCreateRequestDto);
+        return ResponseEntity.ok(Boolean.TRUE);
+    }
 }

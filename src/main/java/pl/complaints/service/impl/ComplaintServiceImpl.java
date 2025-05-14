@@ -1,12 +1,13 @@
 package pl.complaints.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.complaints.dao.Complaint;
-import pl.complaints.dto.complaint.ComplaintRequestDto;
+import pl.complaints.dto.complaint.ComplaintCreateRequestDTO;
 import pl.complaints.dto.complaint.ComplaintResponseDTO;
+import pl.complaints.dto.complaint.ComplaintUpdateRequestDTO;
+import pl.complaints.exception.ComplaintNotFoundException;
 import pl.complaints.mapper.ComplaintMapper;
 import pl.complaints.repository.ComplaintRepository;
 import pl.complaints.repository.ProductRepository;
@@ -39,11 +40,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public void createComplain(Authentication authentication, HttpServletRequest request,
-                               ComplaintRequestDto complaintRequestDto) {
+    public void createComplaint(Authentication authentication, HttpServletRequest request,
+                                ComplaintCreateRequestDTO complaintCreateRequestDto) {
 
         Long customerId = getCustomerIdFromAuthentication(authentication);
-        Long productId = complaintRequestDto.getProductId();
+        Long productId = complaintCreateRequestDto.getProductId();
 
         Optional<Complaint> existingComplaint = complaintRepository.findByCustomerIdAndProductId(customerId, productId);
 
@@ -53,12 +54,23 @@ public class ComplaintServiceImpl implements ComplaintService {
         }
 
         Complaint newComplaint = new Complaint(
-                complaintRequestDto.getDescription(),
+                complaintCreateRequestDto.getDescription(),
                 geoLocationService.getCountryFromRequest(request),
                 getCustomerFromAuthentication(authentication),
                 productRepository.getReferenceById(productId)
         );
 
         complaintRepository.save(newComplaint);
+    }
+
+    @Override
+    public void updateComplaint(Long id, Authentication authentication,
+                                HttpServletRequest request, ComplaintUpdateRequestDTO complaintUpdateRequestDTO) {
+
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new ComplaintNotFoundException(id));
+
+        Complaint updated = ComplaintMapper.INSTANCE.update(complaint, complaintUpdateRequestDTO);
+        complaintRepository.save(updated);
     }
 }

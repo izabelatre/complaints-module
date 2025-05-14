@@ -27,6 +27,9 @@ public class Product {
         this.complaints = complaints;
     }
 
+    public Product() {
+    }
+
     public String getName() {
         return name;
     }

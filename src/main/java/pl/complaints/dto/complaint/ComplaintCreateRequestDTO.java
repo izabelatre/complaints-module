@@ -1,10 +1,10 @@
 package pl.complaints.dto.complaint;
 
-public class ComplaintRequestDto {
+public class ComplaintCreateRequestDTO {
     private String description;
     private Long productId;
 
-    public ComplaintRequestDto(String description, Long productId) {
+    public ComplaintCreateRequestDTO(String description, Long productId) {
         this.description = description;
         this.productId = productId;
     }

@@ -1,6 +1,7 @@
 package pl.complaints.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +24,12 @@ public class ComplaintController {
     private final ComplaintService complaintService;
 
     @GetMapping
-    public ResponseEntity<List<ComplaintResponseDTO>> getAllUserComplains(Authentication authentication,
-                                                                          HttpServletRequest request) {
+    public ResponseEntity<List<ComplaintResponseDTO>> getAllUserComplains(Authentication authentication, HttpServletRequest request) {
         return ResponseEntity.ok(complaintService.getAllCustomerComplaints(getCustomerIdFromAuthentication(authentication)));
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> createComplain(Authentication authentication,
-                                                  HttpServletRequest request,
+    public ResponseEntity<Boolean> createComplain(Authentication authentication, HttpServletRequest request,
                                                   @RequestBody ComplaintRequestDto complaintRequestDto) {
         complaintService.createComplain(authentication, request, complaintRequestDto);
         return ResponseEntity.ok(Boolean.TRUE);

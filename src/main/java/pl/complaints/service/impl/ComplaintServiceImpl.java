@@ -1,6 +1,7 @@
 package pl.complaints.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.complaints.dao.Complaint;

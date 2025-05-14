@@ -10,18 +10,18 @@ import pl.complaints.repository.CustomerRepository;
 @Service
 public class CustomerDetailsService implements UserDetailsService {
 
-	private final CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-	public CustomerDetailsService(CustomerRepository customerRepository) {
-		this.customerRepository = customerRepository;
-	}
+    public CustomerDetailsService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
-	@Override
-	public UserDetails loadUserByUsername(String email) {
-		return customerRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	}
+    @Override
+    public UserDetails loadUserByUsername(String email) {
+        return customerRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 
-	public Customer loadCustomerByEmail(String email) {
-		return customerRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	}
+    public Customer loadCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 }

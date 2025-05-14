@@ -1,6 +1,5 @@
 package pl.complaints.initialization;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Slf4j
 public class DataInitializer implements CommandLineRunner {
 
     private final CustomerRepository customerRepository;

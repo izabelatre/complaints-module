@@ -7,24 +7,31 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import pl.complaints.dao.Customer;
 
+@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private final JwtService jwtService;
-	private final CustomerDetailsService customerDetailsService;
+	private final CustomerDetailsService userDetailsService;
 
-	public JwtAuthFilter(JwtService jwtService, CustomerDetailsService customerDetailsService) {
+	public JwtAuthFilter(JwtService jwtService, CustomerDetailsService userDetailsService) {
 		this.jwtService = jwtService;
-		this.customerDetailsService = customerDetailsService;
+		this.userDetailsService = userDetailsService;
 	}
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+	protected void doFilterInternal(HttpServletRequest request,
+									HttpServletResponse response,
+									FilterChain filterChain)
 			throws ServletException, IOException {
 
 		final String authHeader = request.getHeader("Authorization");
-		final String token;
+		final String jwt;
 		final String email;
 
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -32,14 +39,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			return;
 		}
 
-		token = authHeader.substring(7);
-		email = jwtService.extractEmail(token);
+		jwt = authHeader.substring(7);
+		email = jwtService.extractEmail(jwt);
 
 		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			var userDetails = customerDetailsService.loadUserByUsername(email);
-			if (jwtService.isTokenValid(token, userDetails.getUsername())) {
-				var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(auth);
+			Customer userDetails = this.userDetailsService.loadCustomerByEmail(email);
+
+			if (jwtService.isTokenValid(jwt, userDetails)) {
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities()
+				);
+
+				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)
+				);
+
+				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		}
 

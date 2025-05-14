@@ -8,6 +8,5 @@ import pl.complaints.dao.Product;
 
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
-	List<Complaint> findAllByCustomerAndProduct(Customer customer, Product product);
-
+	List<Complaint> findAllByCustomerId(Long customerId);
 }

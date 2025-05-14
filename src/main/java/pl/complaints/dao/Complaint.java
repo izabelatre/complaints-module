@@ -1,92 +1,95 @@
 package pl.complaints.dao;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.repository.cdi.Eager;
+import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
-@Table(name = "complaints", uniqueConstraints = { @UniqueConstraint(columnNames = { "customer_id", "product_id" }) })
+@Builder
+@Table(name = "complaints", uniqueConstraints = {@UniqueConstraint(columnNames = {"customer_id", "product_id"})})
 public class Complaint {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String description;
-	private long createdAt;
-	private String country;
-	private int complaintCounter;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String description;
+    private long createdAt;
+    private String country;
+    @Builder.Default
+    private int complaintCounter = 1;
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id", nullable = false)
-	private Customer customer;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
-	@ManyToOne
-	@JoinColumn(name = "product_id", nullable = false)
-	private Product product;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-	public Long getId() {
-		return id;
-	}
+    public Complaint(String description, String country, Customer customer, Product product) {
+        this.description = description;
+        this.customer = customer;
+        this.product = product;
+        this.createdAt = System.currentTimeMillis();
+        this.country = country;
+        this.complaintCounter = 1;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Complaint() {
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public long getCreatedAt() {
-		return createdAt;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setCreatedAt(long createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public long getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public int getComplaintCounter() {
-		return complaintCounter;
-	}
+    public String getCountry() {
+        return country;
+    }
 
-	public void setComplaintCounter(int complaintCounter) {
-		this.complaintCounter = complaintCounter;
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	public Customer getCustomer() {
-		return customer;
-	}
+    public int getComplaintCounter() {
+        return complaintCounter;
+    }
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
+    public void setComplaintCounter(int complaintCounter) {
+        this.complaintCounter = complaintCounter;
+    }
 
-	public Product getProduct() {
-		return product;
-	}
+    public Customer getCustomer() {
+        return customer;
+    }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.complaints.configuration.JwtService;
+import pl.complaints.configuration.security.JwtService;
 import pl.complaints.dao.Customer;
-import pl.complaints.dto.AuthRequest;
-import pl.complaints.dto.AuthResponse;
+import pl.complaints.dto.auth.AuthRequest;
+import pl.complaints.dto.auth.AuthResponse;
 
 @RestController
 @RequestMapping("/auth")

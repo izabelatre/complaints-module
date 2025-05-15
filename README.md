@@ -25,6 +25,7 @@ W założeniach stworzyłam prostą autentykacje użytkownika do automatycznego 
 - MapStruct
 - Maven
 - GeoLite2 - do wyrywania kraju wysłania requestu
+
 (Lombok niestety nie chciał mi złapać na Intellij Community 😔 )
 
 ---

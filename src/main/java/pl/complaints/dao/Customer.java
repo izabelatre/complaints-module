@@ -1,8 +1,6 @@
 package pl.complaints.dao;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,8 +9,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "customers")
 public class Customer implements UserDetails {
 
@@ -60,8 +56,21 @@ public class Customer implements UserDetails {
         return true;
     }
 
+    public Customer(String email, String password, List<Complaint> complaints) {
+        this.email = email;
+        this.password = password;
+        this.complaints = complaints;
+    }
+
+    public Customer() {
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setPassword(String password) {

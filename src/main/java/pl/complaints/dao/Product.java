@@ -20,6 +20,12 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Complaint> complaints = new ArrayList<>();
 
+    public Product(String name, String description, List<Complaint> complaints) {
+        this.name = name;
+        this.description = description;
+        this.complaints = complaints;
+    }
+
     public Product(Long id, String name, String description, List<Complaint> complaints) {
         this.id = id;
         this.name = name;
@@ -32,5 +38,9 @@ public class Product {
 
     public String getName() {
         return name;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

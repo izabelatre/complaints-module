@@ -106,7 +106,7 @@ class ComplaintRepositoryTest {
         entityManager.flush();
         entityManager.clear();
 
-        //WHEN
+        //THEN
         updated = complaintRepository.findById(complaint.getId()).orElseThrow();
         assertThat(updated.getComplaintCounter()).isEqualTo(3);
     }

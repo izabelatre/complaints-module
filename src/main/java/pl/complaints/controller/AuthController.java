@@ -17,13 +17,13 @@ import pl.complaints.dto.auth.AuthResponse;
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+
     public AuthController(AuthenticationManager authenticationManager, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
     }
-
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {

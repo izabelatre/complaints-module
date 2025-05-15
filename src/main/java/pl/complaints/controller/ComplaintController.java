@@ -17,11 +17,11 @@ import static pl.complaints.utils.AuthUtils.getCustomerIdFromAuthentication;
 @RequestMapping("/complaint")
 public class ComplaintController {
 
+    private final ComplaintService complaintService;
+
     public ComplaintController(ComplaintService complaintService) {
         this.complaintService = complaintService;
     }
-
-    private final ComplaintService complaintService;
 
     @GetMapping
     public ResponseEntity<List<ComplaintResponseDTO>> getAllUserComplaints(Authentication authentication, HttpServletRequest request) {
